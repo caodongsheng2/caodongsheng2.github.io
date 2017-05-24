@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title></title>
+		<style>
+			*{margin: 0;padding: 0;}
+		</style>
+	</head>
+	<script>
+		(function(){
+			document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + 'px';
+			window.onresize = function() {
+				document.documentElement.style.fontSize = document.documentElement.clientWidth / 16 + 'px';
+			}
+		})()
+	</script>
+	<style>
+		ul{width: 100%;height: auto;padding-bottom: 0.5rem;}
+	</style>
+	<body>
+		<ul id="ul"></ul>
+		
+	</body>
+</html>
+<script>
+				/*console.log(this.nextSbiling.innerHTML);
+				var nextLi=this.nextSibling;//下一个
+				var nnextLi=nextLi.nextSibling;//下下一个
+				var prevLi=this.previousSbiling;//上一个
+				var pprevLi=prevLi.previousSbiling;//上上一个
+				console.log(prevLi.innerHTML);
+				console.log(nnextLi.innerHTML);*/
+	window.onload=function(){
+		var obj={};
+		obj.arr=10;//列表数量
+		obj.oldY=0;//
+		obj.newY=0;//移动距离
+		needY=0;
+		
+		obj.fontsize=parseFloat(document.getElementsByTagName('html')[0].style.fontSize)
+		obj.h=document.body.clientheight ||document.documentElement.clientHeight;//屏幕高
+		
+		var ul=document.getElementById('ul')
+		for(var i=0;i<obj.arr;i++){
+			var aLi=document.createElement('li');
+			aLi.style.cssText='width:95%;height:4rem;background:red;margin:0 auto;margin-top:0.5rem;position: relative;transition: .3s all ease;';
+			aLi.innerHTML=i;
+			aLi.index=i
+			/*事件*/
+			
+			aLi.addEventListener('touchstart',function(e){
+				obj.oldY=0;//
+				obj.newY=0;//移动距离
+				needY=0;
+				obj.oldY=e.touches[0].clientY;
+				var s=siblings(this);
+				var _this=this;
+				//console.log(this.index)
+				/*for(var j=0;j<s.length;j++){
+					s[j].style.transform='translateY(10px)';
+					//console.log(s[j])
+				}*/
+				function gg(e){
+					obj.newY=e.touches[0].clientY;
+					needY=parseInt(obj.newY-obj.oldY);
+					//console.log(needY)
+					if(needY>5){
+						//console.log('下滑')//下滑
+						//console.log(getScrollTop())
+						if(getScrollTop()<=0){
+							return;
+						}
+						for(var j=0;j<s.length;j++){
+							if(s[j].index>_this.index){
+								//点击下边元素
+								s[j].style.transform='translateY(-'+(s[j].index-_this.index)*5+'px)';
+							}else if(s[j].index<_this.index){
+								//点击上边元素
+								//console.log(s[j].index,_this.index)
+								s[j].style.transform='translateY('+(s[j].index-_this.index)*5+'px)';
+							}
+							
+							//console.log(s[j])
+						}
+					}else if(needY<-5){
+						//console.log('上滑')//下滑
+						//document.offsetHeight-obj.h;
+						//console.log(getScrollTop(),document.body.offsetHeight-obj.h+0.5*obj.fontsize)
+						if(getScrollTop()>=document.body.offsetHeight-obj.h+0.5*obj.fontsize){
+							return;
+						}
+						for(var j=0;j<s.length;j++){
+							if(s[j].index>_this.index){
+								//点击下边元素
+								s[j].style.transform='translateY('+(s[j].index-_this.index)*5+'px)';
+							}else if(s[j].index<_this.index){
+								//点击上边元素
+								//console.log(s[j].index,_this.index)
+								s[j].style.transform='translateY(-'+(s[j].index-_this.index)*5+'px)';
+							}
+							
+							//console.log(s[j])
+						}
+					}else{
+						
+					}
+					
+				}
+				document.addEventListener('touchmove',gg,false)
+				document.addEventListener('touchend',function(){
+					/*for(var j=0;j<s.length;j++){
+						s[j].style.transform='translateY(0px)';
+						//console.log(s[j])
+					}*/
+					for(var i=0;i<ul.children.length;i++){
+						//console.log(ul.children[i])
+						ul.children[i].style.transform='translateY(0px)';
+					}
+					document.removeEventListener('touchmove',gg,false)
+					
+				},false);
+			})
+			
+			
+			ul.appendChild(aLi);
+		}
+		function getStyle(obj,sName){
+		if(obj.currentStyle){
+			return obj.currentStyle[sName];
+		}else{
+			return getComputedStyle(obj,false)[sName];
+		}
+	}
+		//var aLi=ul.getElementsByTagName('li')
+		
+		
+		
+	}
+	/*window.onload End*/
+	function siblings(elm) {
+	 	var a = [];
+	 	var p = elm.parentNode.children;
+	 	for(var i =0,pl= p.length;i<pl;i++) {
+	  		if(p[i] !== elm) a.push(p[i]);
+	 	}
+		return a;
+	}
+	function getScrollTop(){
+	    var scrollTop=0;
+	    if(document.documentElement&&document.documentElement.scrollTop){
+	        scrollTop=document.documentElement.scrollTop;
+	    }else if(document.body){
+	        scrollTop=document.body.scrollTop;
+	    }
+	    return scrollTop;
+	}
+</script>
